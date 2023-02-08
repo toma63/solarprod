@@ -7,10 +7,10 @@ require 'net/http'
 require 'json'
 require 'date'
 
-ARNS_SITE = 'xxxxxxx'
-GRISCOM_SITE = 'yyyyyyy'
-MY_TOKEN = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
-G_TOKEN = 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
+SITE1 = 'xxxxxxx'
+SITE2 = 'yyyyyyy'
+SITE1_TOKEN = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
+SITE2_TOKEN = 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
  
 class SolarProduction
 
@@ -66,7 +66,7 @@ class SolarProduction
   end
 
   # initialize energy, power and derived data via the api
-  def init_api(year, month, token = MY_TOKEN, site = ARNS_SITE)
+  def init_api(year, month, token = SITE1_TOKEN, site = SITE1)
     reset()
     @name = "#{year}_#{month}"
     get_energy_api_month(year, month, token, site)
@@ -75,13 +75,13 @@ class SolarProduction
     report()
   end
   
-  def get_energy_api_month(year, month, token = MY_TOKEN, site = ARNS_SITE)
+  def get_energy_api_month(year, month, token = SITE1_TOKEN, site = SITE1)
     start_date, end_date = month_start_end(year, month)
     get_energy_api(start_date, end_date, token, site)
   end
 
   # use the energy API to get daily productio for a month, same as reading the csv
-  def get_energy_api(start_date, end_date, token = MY_TOKEN, site = ARNS_SITE)
+  def get_energy_api(start_date, end_date, token = SITE1_TOKEN, site = SITE1)
     uri = URI("https://monitoringapi.solaredge.com/site/#{site}/energy/?timeUnit=DAY&endDate=#{end_date}&startDate=#{start_date}&api_key=#{token}")
     res = Net::HTTP.get_response(uri)
     if res.is_a?(Net::HTTPSuccess)
@@ -110,13 +110,13 @@ class SolarProduction
     return max, max_date
   end
   
-  def get_power_api_month(year, month, token = MY_TOKEN, site = ARNS_SITE)
+  def get_power_api_month(year, month, token = SITE1_TOKEN, site = SITE1)
     start_time, end_time = month_start_end_time(year, month)
     get_power_api(start_time, end_time, token, site)
   end
 
   # use the power api to get power at 15 minute intervals
-  def get_power_api(start_time, end_time, token = MY_TOKEN, site = ARNS_SITE)
+  def get_power_api(start_time, end_time, token = SITE1_TOKEN, site = SITE1)
     uri = URI("https://monitoringapi.solaredge.com/site/#{site}/power?endTime=#{end_time}&startTime=#{start_time}&api_key=#{token}")
     res = Net::HTTP.get_response(uri)
     if res.is_a?(Net::HTTPSuccess)
