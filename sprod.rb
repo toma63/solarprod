@@ -195,14 +195,14 @@ end
 
 # sprod.rb <month> <year> <other-year[:<other-year>...]
 if __FILE__ == $0
-  target_month = ARGV[0].to_i
-  target_year = ARGV[1].to_i
-  other_years = ARGV[2].split(':').map{|yr| yr.to_i}
 
   unless ARGV.length == 3
     puts "usage: sprod.rb <month> <year> <other-year[:<other-year>...]"
     exit 1
   else
+    target_month = ARGV[0].to_i
+    target_year = ARGV[1].to_i
+    other_years = ARGV[2].split(':').map{|yr| yr.to_i}
     puts "comparing #{target_month} #{target_year} with #{other_years}\n"
   end
 
